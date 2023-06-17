@@ -51,7 +51,19 @@ jobs:
 
           # END: lnl_patches now applied to the released code
           
-          # additional patches can be put below - make sure columns line up      
+          # additional patches can be put below - make sure columns line up     
+             
+          # Loop: Increase future carb time limit to 4 hours from 1 hour default
+          curl https://github.com/loopnlearn/Loop/commit/a974b6749ef4506ca679a0061c260dabcfbf9ee2.patch | git apply --directory=Loop
+
+       
+          # Loop: LoopDataManager: Limit loop cycles to no more frequent than once every 4.8 minutes
+          curl https://github.com/loopnlearn/Loop/commit/414588c5e7dc36f692c8bbcf2d97adde1861072a.patch | git apply --directory=Loop
+      
+              
+          # Upload pod start to Nightscout, Updates both OmniKit (Eros) and OmniBLE (DASH)
+          curl https://raw.githubusercontent.com/loopnlearn/loopbuildscripts/main/patch/cage.patch | git apply
+          
       # Patch Fastlane Match to not print tables
       - name: Patch Match Tables
         run: find /usr/local/lib/ruby/gems -name table_printer.rb | xargs sed -i "" "/puts(Terminal::Table.new(params))/d"
